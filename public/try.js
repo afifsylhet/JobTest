@@ -132,7 +132,8 @@ export default function Home() {
       if (typeof main === "string") {
         secondPersonData.push(main);
       } else if (typeof main !== "string") {
-        secondPersonData.push(Object.keys(main)[0]);
+        const objectKey = Object.keys(main)[0];
+        thirdPersonData.push(objectKey);
         fourthPersonData = Object.values(main);
       }
       if (fourthPersonData) {
@@ -142,15 +143,6 @@ export default function Home() {
       }
     }
   }
-
-  // const mainKeyOfTheObject = [];
-  // const subObject = [];
-  // let secondPersonData = [];
-  // let thirdPersonData = [];
-  // let fourthPersonData = [];
-  // let fifthPersonData = [];
-
-  console.log(secondPersonData);
 
   return (
     <>
