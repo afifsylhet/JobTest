@@ -119,7 +119,6 @@ export default function Home() {
   let secondPersonData = [];
   let thirdPersonData = [];
   let fourthPersonData = [];
-  let fifthPersonData = [];
 
   for (const key in sectorData) {
     const value = key;
@@ -133,24 +132,29 @@ export default function Home() {
         secondPersonData.push(main);
       } else if (typeof main !== "string") {
         secondPersonData.push(Object.keys(main)[0]);
-        fourthPersonData = Object.values(main);
       }
-      if (fourthPersonData) {
-        for (const lastValue of fourthPersonData) {
-          fifthPersonData.push(lastValue);
+      for (const value of secondPersonData) {
+        if (typeof value === "string") {
+          thirdPersonData.push(value);
+        } else if (typeof value !== "string") {
+          thirdPersonData.push(Object.keys(main)[0]);
+        }
+        for (const value of thirdPersonData) {
+          if (typeof value === "string") {
+            fourthPersonData.push(value);
+          } else if (typeof value !== "string") {
+            fourthPersonData.push(Object.keys(main)[0]);
+          }
         }
       }
     }
   }
 
-  // const mainKeyOfTheObject = [];
-  // const subObject = [];
-  // let secondPersonData = [];
-  // let thirdPersonData = [];
-  // let fourthPersonData = [];
-  // let fifthPersonData = [];
-
-  console.log(secondPersonData);
+  // console.log(mainKeyOfTheObject);
+  // console.log(subObject);
+  // console.log(secondPersonData);
+  // console.log(thirdPersonData);
+  console.log(fourthPersonData);
 
   return (
     <>

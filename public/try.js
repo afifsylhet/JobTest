@@ -144,6 +144,36 @@ export default function Home() {
     }
   }
 
+  const mainKeyOfTheObject = [];
+  const subObject = [];
+  let secondPersonData = [];
+  let thirdPersonData = [];
+  let fourthPersonData = [];
+
+  for (const key in sectorData) {
+    const value = key;
+    mainKeyOfTheObject.push(value);
+    subObject.push(sectorData[key]);
+  }
+
+  for (const value of subObject) {
+    for (const main of value) {
+      if (typeof main === "string") {
+        secondPersonData.push(main);
+      } else if (typeof main !== "string") {
+        secondPersonData.push(Object.keys(main)[0]);
+        if (typeof Object.keys(main)[0] === "string") {
+          thirdPersonData.push(Object.keys(main)[0]);
+        } else if (typeof Object.keys(main)[0] !== "string") {
+          thirdPersonData.push(Object.keys(main)[0]);
+          if (thirdPersonData) {
+            fourthPersonData.push(Object.values(thirdPersonData));
+          }
+        }
+      }
+    }
+  }
+
   return (
     <>
       <Head>
