@@ -12,7 +12,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState("");
   const [name, setName] = useState("");
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(null);
 
   useEffect(() => {
     fetch("/api/allSectors")
@@ -42,10 +42,29 @@ export default function Home() {
   };
 
   const checkboxValue = (e) => {
-    if (e.target.value === false) {
-      setIsChecked(true);
-    } else {
-      setIsChecked(false);
+    setIsChecked(e.target.checked);
+  };
+
+  const getDataObject = {
+    myName: name,
+    mySector: selected,
+    Checkbox: isChecked,
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("/api/sendData", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(getDataObject),
+      });
+      const jsonData = await response.json();
+      console.log(jsonData);
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -66,11 +85,11 @@ export default function Home() {
         <div className=" grid sm:grid-cols-2 gap-4">
           <div className="p-3">
             <h2 className="text-3xl font-normal">
-              Please enter your name and pick the sectors you are currently
+              Please enter your name and pick the sector you are currently
               involved in
             </h2>
             <br />
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="flex">
                 <label className="flex-none font-bold" htmlFor="nameField">
                   Name
@@ -80,16 +99,20 @@ export default function Home() {
                   type="text"
                   id="nameField"
                   placeholder="Ex: Judy Brown"
+                  required
+                  onChange={nameCollection}
                 />
               </div>
               <br />
               <label className="font-bold" htmlFor="set">
-                Please select your sectors from the below options
+                Please select your sector from the below options
               </label>
               <select
                 multiple=""
-                size="10"
+                size="12"
                 className="p-1 border border-black w-full m-0"
+                onChange={selectedItem}
+                required
               >
                 {data?.data?.map((item) => (
                   <optgroup item={item} key={item._id} label={item.partname}>
@@ -103,7 +126,8 @@ export default function Home() {
               </select>
               <br />
               <br />
-              <input type="checkbox" /> Agree to terms
+              <input type="checkbox" onClick={checkboxValue} required /> Agree
+              to terms
               <br />
               <br />
               <div>
@@ -124,7 +148,50 @@ export default function Home() {
           </div>
 
           <div className="p-3">
-            <h2 className="text-3xl font-normal">Your output is here</h2>
+            <h2 className="text-3xl font-normal">
+              Refill the form using stored data Section
+            </h2>
+            <br />
+            <label className="flex-none font-bold" htmlFor="nameField2">
+              Name
+            </label>
+            <input
+              className="grow ml-3 p-1 border border-black w-10/12"
+              type="text"
+              id="nameField2"
+              placeholder="Ex: Judy Brown"
+              required
+            />
+            <br />
+            <br />
+            <label className="flex-none font-bold" htmlFor="sectorField">
+              Sector
+            </label>
+            <input
+              className="grow ml-3 p-1 border border-black w-10/12"
+              type="text"
+              id="sectorField"
+              placeholder="Ex: Judy Brown"
+              required
+              onChange={nameCollection}
+            />
+            <br />
+            <br />
+            <label className="flex-none font-bold" htmlFor="IdField">
+              ID NO
+            </label>
+            <input
+              className="grow ml-3 p-1 border border-black w-10/12"
+              type="text"
+              id="IdField"
+              placeholder="Ex: Judy Brown"
+              required
+              onChange={nameCollection}
+            />
+            <br />
+            <br />
+            <span className="mr-6 font-bold">Agree to terms :</span>{" "}
+            <span>Yes</span>
           </div>
         </div>
       </main>
