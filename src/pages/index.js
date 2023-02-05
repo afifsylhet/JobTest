@@ -2,159 +2,52 @@ import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "@next/font/google";
 import styles from "@/styles/Home.module.css";
-
 const inter = Inter({ subsets: ["latin"] });
 
+import React, { useState, useEffect } from "react";
+
 export default function Home() {
-  const sectorData = {
-    Manufacturing: [
-      "Construction materials",
-      "Electronics and Optics",
-      {
-        "Food and Beverage": [
-          "Bakery & confectionery products",
-          "Beverages",
-          "Fish & fish products",
-          "Meat & meat products",
-          "Milk & dairy products",
-          "Other",
-          "Sweets & snack food",
-        ],
-      },
-      {
-        Furniture: [
-          "Bathroom/sauna",
-          "Bedroom",
-          " Children's room",
-          " Kitchen",
-          " Living room",
-          "Office",
-          "Other (Furniture)",
-          "Outdoor",
-          "Project furniture",
-        ],
-      },
-      {
-        Machinery: [
-          "Machinery components",
-          "Machinery equipment or tools",
-          " Manufacture of machinery",
-          {
-            Maritime: [
-              " Aluminum and steel workboats",
-              "Boat/Yacht building",
-              " Ship repair and conversion",
-            ],
-          },
-          "Metal structures",
-          " Other",
-          " Repair and maintenance service",
-        ],
-      },
-      {
-        Metalworking: [
-          "Construction of metal structures",
-          "Houses and buildings",
-          "Metal products",
-          {
-            Metalworks: [
-              "CNC-machining",
-              "Forgings, Fasteners",
-              "Gas, Plasma, Laser cutting",
-              "MIG, TIG, Aluminum welding",
-            ],
-          },
-        ],
-      },
-      {
-        "Plastic and Rubber": [
-          "Packaging",
-          "Plastic goods",
-          {
-            "Plastic processing technology": [
-              " Blowing",
-              " Molding",
-              "Plastics welding and processing",
-            ],
-          },
-          "Plastic profiles",
-        ],
-      },
-      {
-        Printing: [
-          "Advertising",
-          "Book/Periodicals printing",
-          "Labeling and packaging printing",
-        ],
-      },
-      {
-        "Textile and Clothing": ["Clothing", "Textile"],
-      },
-      {
-        Wood: ["Other Wood", "Wooden building materials", "Wooden houses"],
-      },
-    ],
-    Other: ["Creative industries", "Energy technology", "Environment"],
-    Service: [
-      "Business services",
-      "Engineering",
-      {
-        "Information Technology and Telecommunications": [
-          "Data processing, Web portals, E-marketing",
-          "Programming, Consultancy",
-          "Software, Hardware",
-          "Telecommunications",
-        ],
-      },
-      "Tourism",
-      "Translation services",
-      {
-        "Transport and Logistics": ["Air", "Rail", "Road", "Water"],
-      },
-    ],
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [selected, setSelected] = useState("");
+  const [name, setName] = useState("");
+  const [isChecked, setIsChecked] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/allSectors")
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setError(error);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  const selectedItem = (e) => {
+    const data = e.target.value;
+    const newData = data.trim();
+    setSelected(newData);
   };
 
-  const mainKeyOfTheObject = [];
-  const subObject = [];
-  let secondPersonData = [];
-  let thirdPersonData = [];
-  let fourthPersonData = [];
+  const nameCollection = (e) => {
+    setName(e.target.value);
+  };
 
-  for (const key in sectorData) {
-    const value = key;
-    mainKeyOfTheObject.push(value);
-    subObject.push(sectorData[key]);
-  }
-
-  for (const value of subObject) {
-    for (const main of value) {
-      if (typeof main === "string") {
-        secondPersonData.push(main);
-      } else if (typeof main !== "string") {
-        secondPersonData.push(Object.keys(main)[0]);
-      }
-      for (const value of secondPersonData) {
-        if (typeof value === "string") {
-          thirdPersonData.push(value);
-        } else if (typeof value !== "string") {
-          thirdPersonData.push(Object.keys(main)[0]);
-        }
-        for (const value of thirdPersonData) {
-          if (typeof value === "string") {
-            fourthPersonData.push(value);
-          } else if (typeof value !== "string") {
-            fourthPersonData.push(Object.keys(main)[0]);
-          }
-        }
-      }
+  const checkboxValue = (e) => {
+    if (e.target.value === false) {
+      setIsChecked(true);
+    } else {
+      setIsChecked(false);
     }
-  }
-
-  // console.log(mainKeyOfTheObject);
-  // console.log(subObject);
-  // console.log(secondPersonData);
-  // console.log(thirdPersonData);
-  console.log(fourthPersonData);
+  };
 
   return (
     <>
@@ -165,8 +58,75 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        <h1>Hello Bangladesh</h1>
+      <main className="container mx-auto">
+        <br />
+        <br />
+        <br />
+
+        <div className=" grid sm:grid-cols-2 gap-4">
+          <div className="p-3">
+            <h2 className="text-3xl font-normal">
+              Please enter your name and pick the sectors you are currently
+              involved in
+            </h2>
+            <br />
+            <form>
+              <div className="flex">
+                <label className="flex-none font-bold" htmlFor="nameField">
+                  Name
+                </label>
+                <input
+                  className="grow ml-3 p-1 border border-black w-9/12"
+                  type="text"
+                  id="nameField"
+                  placeholder="Ex: Judy Brown"
+                />
+              </div>
+              <br />
+              <label className="font-bold" htmlFor="set">
+                Please select your sectors from the below options
+              </label>
+              <select
+                multiple=""
+                size="10"
+                className="p-1 border border-black w-full m-0"
+              >
+                {data?.data?.map((item) => (
+                  <optgroup item={item} key={item._id} label={item.partname}>
+                    {item.dataArray.map((rowData) => (
+                      <option key={rowData} value={rowData}>
+                        {rowData}
+                      </option>
+                    ))}
+                  </optgroup>
+                ))}
+              </select>
+              <br />
+              <br />
+              <input type="checkbox" /> Agree to terms
+              <br />
+              <br />
+              <div>
+                <button
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-6 rounded-full"
+                  type="submit"
+                >
+                  Save
+                </button>
+                <button
+                  className="ml-4 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-6 rounded-full"
+                  type="reset"
+                >
+                  Reset
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <div className="p-3">
+            <h2 className="text-3xl font-normal">Your output is here</h2>
+          </div>
+        </div>
       </main>
     </>
   );
