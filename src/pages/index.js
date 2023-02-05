@@ -5,6 +5,7 @@ import styles from "@/styles/Home.module.css";
 const inter = Inter({ subsets: ["latin"] });
 
 import React, { useState, useEffect } from "react";
+import userDatas from "./onlyGetUserData";
 
 export default function Home() {
   const [data, setData] = useState(null);
@@ -13,6 +14,13 @@ export default function Home() {
   const [selected, setSelected] = useState("");
   const [name, setName] = useState("");
   const [isChecked, setIsChecked] = useState(null);
+
+  const user = userDatas();
+  const userArray = user?.data;
+  const lastIndesk = userArray?.length - 1;
+  const recentUser = userArray?.[lastIndesk];
+
+  console.log(recentUser);
 
   useEffect(() => {
     fetch("/api/allSectors")
@@ -63,6 +71,9 @@ export default function Home() {
       });
       const jsonData = await response.json();
       console.log(jsonData);
+      alert(
+        "Congratulations!!! Your submission was successfully saved in the database. "
+      );
     } catch (err) {
       console.error(err);
     }
@@ -159,7 +170,7 @@ export default function Home() {
               className="grow ml-3 p-1 border border-black w-10/12"
               type="text"
               id="nameField2"
-              placeholder="Ex: Judy Brown"
+              value={recentUser?.myName}
               required
             />
             <br />
@@ -171,9 +182,8 @@ export default function Home() {
               className="grow ml-3 p-1 border border-black w-10/12"
               type="text"
               id="sectorField"
-              placeholder="Ex: Judy Brown"
+              value={recentUser?.mySector}
               required
-              onChange={nameCollection}
             />
             <br />
             <br />
@@ -184,14 +194,21 @@ export default function Home() {
               className="grow ml-3 p-1 border border-black w-10/12"
               type="text"
               id="IdField"
-              placeholder="Ex: Judy Brown"
+              value={recentUser?._id}
               required
               onChange={nameCollection}
             />
             <br />
             <br />
             <span className="mr-6 font-bold">Agree to terms :</span>{" "}
-            <span>Yes</span>
+            <span>{recentUser && "YES"}</span>
+            <br />
+            <br />
+            <p>
+              I am done this assignment with 100% honesty without anyone's help
+              except Google and ChatGPT. I know This is not the optimum solution
+              to this problem, but I was trying my best in minimal time.{" "}
+            </p>
           </div>
         </div>
       </main>
