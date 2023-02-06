@@ -1,8 +1,6 @@
 import Head from "next/head";
 import Image from "next/image";
-import { Inter } from "@next/font/google";
 import styles from "@/styles/Home.module.css";
-const inter = Inter({ subsets: ["latin"] });
 
 import React, { useState, useEffect } from "react";
 import userDatas from "./onlyGetUserData";
@@ -158,7 +156,7 @@ export default function Home() {
 
           <div className="p-3">
             <h2 className="text-3xl font-normal">
-              Our most recent user's information.
+              Our most recent user information.
             </h2>
             <br />
             <label className="flex-none font-bold" htmlFor="nameField2">
@@ -203,9 +201,9 @@ export default function Home() {
             <br />
             <br />
             <p className="font-bold bg-slate-200 py-2 px-2">
-              I am done this assignment with 100% honesty without anyone's help
+              I am done this assignment with 100% honesty without anyones help
               except Google and ChatGPT. I know This is not the optimum solution
-              to this problem, but I was trying my best in minimal time.{" "}
+              to this problem, but I was trying my best in minimal time.
             </p>
           </div>
         </div>
