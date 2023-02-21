@@ -7,7 +7,7 @@ async function run(req, res) {
     console.log(sata);
 
     const client = await MongoClient.connect(
-      `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.oyjsjo4.mongodb.net/?retryWrites=true&w=majority`
+      `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster01.joqm4ye.mongodb.net/?retryWrites=true&w=majority`
 
       // `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.a3ykp.mongodb.net/?retryWrites=true&w=majority`
     );
