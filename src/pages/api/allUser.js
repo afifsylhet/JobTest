@@ -1,8 +1,7 @@
 import { MongoClient } from "mongodb";
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster01.joqm4ye.mongodb.net/?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.8y10for.mongodb.net/?retryWrites=true&w=majority`;
 
-// const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.a3ykp.mongodb.net/testForAfif?retryWrites=true&w=majority`;
 
 export default async function myData(req, res) {
   const client = new MongoClient(uri, {
