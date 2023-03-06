@@ -16,7 +16,7 @@ export default async function myData(req, res) {
   } catch (error) {
     res.status(500).json({ error: error.message });
   } finally {
-    await client.close();
+    // await client.close();
   }
   return data;
 }

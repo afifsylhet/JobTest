@@ -19,7 +19,7 @@ async function run(req, res) {
 
     res.status(201).json({ massage: "data inserted successfully" });
 
-    client.close();
+    // client.close();
   }
 }
 
